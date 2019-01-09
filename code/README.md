@@ -160,11 +160,12 @@ use vector based sampling and loss calculation
 * **-readaility**
 Readability type to use
 
-Dependencies: Spacy, NLTK, KenLM, Pytorch, Readability, gensim, Tensorflow, marian-nmt
-Readability : https://pypi.org/project/readability/ Version 0.2
-Spacy: https://spacy.io/ Version: 2.0.10
-Pytorch: 0.4
-gensim: 3.4
+### Dependencies: 
+* Spacy, NLTK, KenLM, Pytorch, Readability, gensim, Tensorflow, marian-nmt
+* Readability : https://pypi.org/project/readability/ Version 0.2
+* Spacy: https://spacy.io/ Version: 2.0.10
+* Pytorch: 0.4
+* gensim: 3.4
 
 
 ### Dataset:
