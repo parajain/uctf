@@ -13,7 +13,7 @@ def _cat_directions(h, bidirectional_encoder):
 
 
 def train_batch(input_batches, input_lengths, target_batches, target_lengths, control_batches, encoder, decoder, encoder_optimizer,
-          options, vocab_tgt, smodel, scriterion, loss_function='masked-ce'):
+          options, vocab_tgt, smodel=None, scriterion=None, loss_function='masked-ce'):
     """
     :param input_batches: size max_seq_length x batch_size
     :param input_lengths:
@@ -72,15 +72,16 @@ def train_batch(input_batches, input_lengths, target_batches, target_lengths, co
 
 
     decoder_outputs = functional.softmax(all_decoder_outputs/options.temp, dim = 2)
+    if smodel is None:
+        loss = loss_ce
+    else:
+        model_outputs = smodel(input_batches, decoder_outputs, False)
+        control_batches = control_batches.long().squeeze(1)
+        sloss = scriterion(model_outputs, control_batches - 1)
+        loss = options.weight_ce * loss_ce + options.weight_mlp * sloss
 
-    model_outputs = smodel(input_batches, decoder_outputs, False)
-    control_batches = control_batches.long().squeeze(1)
-    sloss = scriterion(model_outputs, control_batches - 1)
-
-    loss = options.weight_ce * loss_ce + options.weight_mlp * sloss
-
-    print('sloss ', sloss.data[0])
-    print('loss_ce ', loss_ce.data[0])
+        print('sloss ', sloss.data[0])
+        print('loss_ce ', loss_ce.data[0])
     loss.backward()
     encoder_optimizer.step()
     return loss.data[0]
