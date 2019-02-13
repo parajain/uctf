@@ -293,7 +293,7 @@ def train(options):
             #if ex_epoch % 5 == 0:
             #    print("Sub epoch ", epoch)
             
-            batch_num = 0
+            batch_num = 1
             ex_epoch_loss = 0
             
             for sample_batched in dataloaderPre:
